@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5; /* Cor de fundo leve */
+            margin: 0;
+            padding: 20px; /* Adiciona espaço ao redor do conteúdo */
+        }
+
+        h1 {
+            text-align: center; /* Centraliza o título */
+        }
+
+        .container {
+            max-width: 1200px; /* Largura máxima do contêiner */
+            margin: 0 auto; /* Centraliza o contêiner */
+        }
+
+        .button {
+            background-color: #007bff; /* Cor de fundo do botão */
+            color: white; /* Cor do texto do botão */
+            border: none; /* Remove a borda padrão */
+            padding: 10px 20px; /* Espaçamento interno do botão */
+            border-radius: 5px; /* Bordas arredondadas */
+            cursor: pointer; /* Muda o cursor ao passar o mouse */
+            text-decoration: none; /* Remove o sublinhado do link */
+            margin-bottom: 20px; /* Margem inferior para espaçar do conteúdo */
+            display: inline-block; /* Permite margens ao redor do botão */
+        }
+
+        .button:hover {
+            background-color: #0056b3; /* Cor de fundo ao passar o mouse */
+        }
+
+        table {
+            width: 100%; /* Largura total da tabela */
+            border-collapse: collapse; /* Remove o espaçamento entre as bordas */
+            margin-top: 20px; /* Margem superior para espaçar da seção anterior */
+        }
+
+        th, td {
+            padding: 12px; /* Espaçamento interno nas células */
+            text-align: left; /* Alinhamento à esquerda do texto */
+            border: 1px solid #ced4da; /* Borda das células */
+        }
+
+        th {
+            background-color: #f8f9fa; /* Cor de fundo para cabeçalho */
+            font-weight: bold; /* Negrito para o cabeçalho */
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2; /* Cor de fundo para linhas pares */
+        }
+
+        tr:hover {
+            background-color: #e9ecef; /* Cor de fundo ao passar o mouse */
+        }
+
+        .status-active {
+            color: green; /* Cor verde para status ativo */
+        }
+
+        .status-inactive {
+            color: red; /* Cor vermelha para status inativo */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Usuários</h1>
+        <a class="button" href="{{ url_for('new_user') }}">Adicionar Novo Usuário</a>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Nome Real</th>
+                <th>Ativo</th>
+                <th>Data de Criação</th>
+                <th>Última Alteração</th>
+                <th>Ações</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.real_name }}</td>
+                <td class="{{ 'status-active' if user.is_active else 'status-inactive' }}">
+                    {{ 'Ativo' if user.is_active else 'Bloqueado' }}
+                </td>
+                <td>{{ user.created_at }}</td>
+                <td>{{ user.updated_at }}</td>
+                <td>
+                    <a class="button" href="{{ url_for('edit_user', user_id=user.id) }}">Editar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
